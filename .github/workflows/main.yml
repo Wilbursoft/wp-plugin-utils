@@ -1,0 +1,35 @@
+name: Tests
+on: [push]
+
+jobs:
+  unit-test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      
+      - name: Checkout  
+        uses: actions/checkout@v2
+        with:
+          path: wp-plugin-utils
+
+      - name: Checkout wp-plugin-test-env
+        uses: actions/checkout@v2
+        with:
+          repository: Wilbursoft/wp-plugin-test-env
+          path: wp-plugin-test-env
+
+      - name: Run tests
+        run: |
+
+          echo creating docker image for test environment
+          cd ./wp-plugin-test-env
+          ./bin/make-wp-docker.sh ../wp-plugin-utils
+          
+          echo spinning up test environment 
+          ./bin/bring-up-test-env.sh
+          cd ..
+
+          echo Run the tests
+          docker exec docker-test-env_wordpress_1 /var/www/html/setup-run-unittests.sh 
+          exit $?
+         
