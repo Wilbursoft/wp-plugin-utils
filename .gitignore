@@ -1,5 +1,5 @@
 # Ignore files in this folder
-./gitignore/
+
 
 # ignore build files
 ./build/
