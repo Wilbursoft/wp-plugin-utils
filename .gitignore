@@ -2,13 +2,13 @@
 gitignore/
 
 # ignore build files
-./build/
+build/
 
 
 # ignore local test scaffold test files
-./tests/bootstrap.php
-./tests/test-sample.php
-./bin/install-wp-tests.sh
-./phpunit.xml.dist
-./.phpcs.xml.dist
-./.travis.yml
+tests/bootstrap.php
+tests/test-sample.php
+bin/install-wp-tests.sh
+phpunit.xml.dist
+.phpcs.xml.dist
+.travis.yml
