@@ -1,3 +1,6 @@
+# Anything in lib is a generated file 
+lib/
+
 # Ignore files in this folder
 gitignore/
 

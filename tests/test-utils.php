@@ -3,7 +3,7 @@
 /**
 * Test Utilities
 */
-require_once "./utils.php";
+require_once "./src/utils.php";
 
 class UtilsTest extends WP_UnitTestCase
 {

@@ -4,6 +4,10 @@
 * PHP Utilities
 */
 
+// BEGIN_NAMESPACE_EDIT_MARKER
+// <-- namespace statement will get added here ---> 
+// END_NAMESPACE_EDIT_MARKER
+
 // get a value form an array default if it does not exists
 function get_value ($array, $name, $default){
   
