@@ -6,5 +6,6 @@ Utilities and classes for WordPress plugins \
 
 To use this library in your plugin
 
-1) go to the root of your plugin directory 
+1) go to the root of your plugin directory and pull in as a sub module 
+
     $ git submodule add https://github.com/Wilbursoft/wp-plugin-utils.git
