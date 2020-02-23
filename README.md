@@ -33,5 +33,4 @@ You can make the namespace reference prefix shorter by aliasing with use.
     require_once dirname( __FILE__ ) .'/wp-plugin-utils/lib/utils.php';
     use wp_action_network_signup\plugin_utils as utils;
     
-    // trace
     utils\dbg_trace("");
