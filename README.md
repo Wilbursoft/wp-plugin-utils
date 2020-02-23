@@ -8,6 +8,7 @@ To use this library in your plugin
 
 1) go to the root of your plugin directory and pull in as a sub module 
 
+    
     $ git submodule add https://github.com/Wilbursoft/wp-plugin-utils.git
     
 You now have a sub directory 'wp-plugin-utils/src' with the raw librarby code in it!
@@ -16,6 +17,7 @@ it does not clash whwne used by multiple plugins
 
 2) Run the following where 'my-plugin-folder' is your plugin folder 
 
+    
     $ php ./wp-plugin-utils/pull-src2lib.php my-plugin-folder
 
 You now have a sub directory 'wp-plugin-utils/lib' with a copy of the code ready to use. 
