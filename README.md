@@ -14,7 +14,7 @@ You now have a sub directory 'wp-plugin-utils/src' with the raw librarby code in
 But thats not ready to use yet, you need to put it in to a unique name space for this plugin so 
 it does not clash whwne used by multiple plugins 
 
-2) Run the following where 'my-plugin-folder' is your plugin folder 
+2) Run the following where 'my-plugin-folder' is your plugin directory (that you are in the root of) 
 
     $ php ./wp-plugin-utils/pull-src2lib.php my-plugin-folder
 
