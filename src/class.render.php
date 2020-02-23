@@ -9,7 +9,7 @@
 // END_NAMESPACE_EDIT_MARKER
 
 // Our plugins render class 
-class render {
+class Render {
 	
 
 	// Constructor

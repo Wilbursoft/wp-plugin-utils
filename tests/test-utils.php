@@ -139,10 +139,19 @@ class UtilsTest extends WP_UnitTestCase
         $this->assertTrue(true === is_style_enqueued('path/dummy-style.css'));    
         $this->assertTrue(false === is_style_enqueued('path/test-utils-style.css'));
         wp_enqueue_style( 'test-utils-style', 'path/test-utils-style.css'); 
-        $this->assertTrue(true === is_style_enqueued('path/test-utils-style.css'));    
+        $this->assertTrue(true === is_style_enqueued('path/test-utils-style.css'));   
+        
+        $this->assertTrue(false === helper_is_enqueued(null,""));   
+
        
     }
     
+    public function test_get_font_awesome_icon_list(){
+        
+        $array_of_icons = get_font_awesome_icon_list();
+        $this->assertTrue(50 < count($array_of_icons));   
+
+    }
     
 }
 

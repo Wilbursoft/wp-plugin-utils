@@ -13,6 +13,8 @@ class RenderTest extends WP_UnitTestCase
     public function test_dbg_trace()
     {
         $this->assertTrue( true);
+        
+        $render_class = new Render();
     }
     
 }

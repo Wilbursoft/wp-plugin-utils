@@ -7,11 +7,15 @@
 **/
 
 
+// Dont want this code in coverage reports 
+// @codeCoverageIgnoreStart
 
 // includes 
 require_once dirname( __FILE__ ) .'/src/utils.php';
 
 
-
-// 
+// Trace presence
 dbg_trace("");
+
+// Dont want this code in coverage reports 
+// @codeCoverageIgnoreEnd

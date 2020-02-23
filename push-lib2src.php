@@ -5,6 +5,10 @@
 */
 
 
+// Dont want this code in coverage reports 
+// @codeCoverageIgnoreStart
+
+
 // Globals
 $from_dir = "";
 $to_dir = "";
@@ -124,3 +128,5 @@ foreach ($dir as $fileinfo) {
     }
 
 }
+
+//@codeCoverageIgnoreEnd
