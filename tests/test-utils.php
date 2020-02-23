@@ -3,7 +3,7 @@
 /**
 * Test Utilities
 */
-require_once "./src/utils.php";
+require_once dirname( __FILE__ ) . "/../src/utils.php";
 
 class UtilsTest extends WP_UnitTestCase
 {
