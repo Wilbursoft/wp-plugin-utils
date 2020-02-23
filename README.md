@@ -15,7 +15,7 @@ You now have a sub directory 'wp-plugin-utils/src' with the raw librarby code in
 But thats not ready to use yet, you need to put it in to a unique name space for this plugin so 
 it does not clash whwne used by multiple plugins 
 
-2) Run the following where 'my-plugin-folder' is your plugin folder 
+2) Run the following where 'my-plugin-folder' is your plugin directory (that you are in the root of) 
 
     
     $ php ./wp-plugin-utils/pull-src2lib.php my-plugin-folder
@@ -34,6 +34,5 @@ You can make the namespace reference prefix shorter by aliasing with use.
 
     require_once dirname( __FILE__ ) .'/wp-plugin-utils/lib/utils.php';
     use wp_action_network_signup\plugin_utils as utils;
-
-    // trace
+    
     utils\dbg_trace("");
