@@ -8,42 +8,58 @@
 // <-- namespace statement will get added here ---> 
 // END_NAMESPACE_EDIT_MARKER
 
+
 // Our form class 
 abstract class Form {
 	
 	// Class member variabes
 	private $form_name = "";
+	private $form_id = "";
+	private $validate_fail_message = "";
+	private $validate_success_message = "";
+
+	// Set to false if post data not valid 
+	private $post_valid = true;
+	
+	// Flag validation errors
+	function set_post_invalid(){
+		$this->post_valid = true;
+	}
 	
 	// Constructor
-	function __construct( $form_name, $form_id ) {
+	function __construct( 
+					$form_name, 
+					$form_id,
+					$validate_fail_message,
+					$validate_success_message
+					) {
 		
 		// Check params
-		assert(! empty( $form_name ),	'$form_name cannot be empty.');
-		assert(! empty( $form_id ),		'$form_id cannot be empty.');
+		assert( ! empty( $form_name ) and
+				! empty( $form_id ) and
+				! empty( $validate_fail_message ) and
+				! empty( $validate_success_message ), 
+				'none of the params cannot be empty.');
 		
 		// Assign to class 
 		$this->form_name = $form_name;
 		$this->form_id = $form_id;
+		$this->validate_fail_message = $validate_fail_message;
+		$this->validate_success_message = $validate_success_message;
 		
-		// Callback for form post
-		add_action( "admin_post_nopriv_{$form_name}", array($this, 'fn_form_post' ));
-		add_action( "admin_post_{$form_name}", array($this, 'fn_form_post' ));
 	}
-	
-	
-	
 	
 	// Opens the form html
 	function get_form_open_html(){
 		
 		// Action url
-		$form_action = esc_url( admin_url('admin-post.php') );
+		$form_action = get_permalink();
 		
 		ob_start();
 		
 		?> 
 		<form method='post' action= '<?php echo $form_action ?>'  id='<?php echo $this->form_id  ?>'> 
-		<input type='hidden' name='action' value='<?php echo $this->form_name ?>' />
+		<input type='hidden' name='form_name' value='<?php echo $this->form_name ?>' />
 		<?php 
 		
 		$output = ob_get_contents();
@@ -56,11 +72,6 @@ abstract class Form {
 	
 	// Handle the form post
 	abstract function handle_form_post();
-	
-	// Call back for the form post
-	function fn_form_post(){
-		$this->handle_form_post();
-	}
 	
 	// Closes the form html
 	function get_form_close_html(){
@@ -76,11 +87,48 @@ abstract class Form {
 		return $output;
 	}
 	
+	// helper checks of the post belongs to this form
+	private function hlp_post_belongs_to_form(){
+		
+		global $_POST;
+		return ( isset($_POST['form_name']) and $this->form_name == $_POST['form_name'] );
+	}
+	
+	// Are we handling a post for this form
+	function get_form_msg_html(){
+
+		// Declare now 
+		$output = "";
+		
+		// Success or failure
+	 	if ( $this->post_valid ){
+	 		$output = "<p>" . $this->validate_success_message . "</p>";
+	 	}
+	 	else {
+	 		$output = "<p>" . $this->validate_fail_message . "</p>";
+	 	}
+		
+		// Done
+		return $output;
+	}
+	
 	
 	// Return the full html for the form
 	function get_form_html(){
 	
 		$output = "";
+		
+		// Need to handle the post?
+		if( $this->hlp_post_belongs_to_form() ){
+		
+			// Hanlde the post
+			$this->handle_form_post();
+			
+			// Output the message
+			$output .= $this->get_form_msg_html();
+		}
+		
+		$output .= $this->get_form_msg_html();
 		$output .= $this->get_form_open_html();
 		$output .= $this->get_form_contents_html();
 		$output .= $this->get_form_close_html();

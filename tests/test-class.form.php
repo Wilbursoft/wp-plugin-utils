@@ -44,7 +44,13 @@ class Form_Test extends WP_UnitTestCase
         
         $form_name = 'my_test_form';
         $form_id = 'my_test_id';
-        $form_to_test = new Form_Sublcass($form_name, $form_id);
+        $failed_msg = 'failed-abc';
+        $success_msg = 'succees-xyz';
+        $form_to_test = new Form_Sublcass(
+                                        $form_name, 
+                                        $form_id,
+                                        $failed_msg,
+                                        $success_msg);
         
         $this->assertTrue( false === $form_to_test->get_form_contents_html_was_called );
         
@@ -83,7 +89,14 @@ class Form_Test extends WP_UnitTestCase
         
         $form_name = 'my_test_form';
         $form_id = 'my_test_id';
-        $form_to_test = new Form_Sublcass($form_name, $form_id);
+        $failed_msg = 'failed-abc';
+        $success_msg = 'succees-xyz';
+        $form_to_test = new Form_Sublcass(
+                                        $form_name, 
+                                        $form_id,
+                                        $failed_msg,
+                                        $success_msg);
+                                        
         $this->assertTrue( false === $form_to_test->handle_form_post_was_called );
         $form_to_test->fn_form_post();
         $this->assertTrue( true === $form_to_test->handle_form_post_was_called );
