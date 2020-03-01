@@ -46,6 +46,14 @@ class Render_SubClass extends Render {
 
 }
 
+
+class Render_SubClass_with_dynamic_css extends Render_SubClass {
+    
+    function render_dynamic_css(){}
+
+}
+
+
 class Render_Test extends WP_UnitTestCase
 {
 
@@ -57,7 +65,11 @@ class Render_Test extends WP_UnitTestCase
         
         Render_SubClass::test_methods_privately($this);
         
-        
     }
     
+    public function test_dynamic_css(){
+        
+        $dynamic_css_render = new Render_SubClass_with_dynamic_css('render_dynamic_css_short_code');
+        $dynamic_css_render->fn_enqueue_scripts();
+    }
 }

@@ -19,17 +19,18 @@ abstract class Render {
 		return $this->short_code_tag; 
 	}
 	
-	// Abstract & overidable methods
+	// Get the dynamic css action name
+	function get_dynamic_css_action_name(){
+		return ('dyn_css-' . $this->short_code_tag); 
+	}
+	// Abstract & overridable methods
 	
 	// Called to render the short code 
 	abstract function render_shortcode();
 	
 	// Called to render the dynamic css content
 	// Override if dynamic css needed.
-	function render_dynamic_css(){
-		assert(false, 'this function should only be called if it is overriden.');
-	}
-	
+	function render_dynamic_css(){}
 	
 	// Constructor
 	function __construct( $short_code_tag ) {
@@ -40,16 +41,26 @@ abstract class Render {
 		// Assign to class 
 		$this->short_code_tag = $short_code_tag;
 		
+		
 		// Register for init call back
     	add_action( 'init', array ($this, 'fn_register_short_codes'));
   
-    	// Scripts and CSS
-		add_action( 'wp_enqueue_scripts', array($this, 'fn_enqueue_scripts') );
-		
-		// Ajax actions to handle dynamic css
-		add_action('wp_ajax_dynamic_css', array($this,'fn_dynamic_css'));
-    	add_action('wp_ajax_nopriv_dynamic_css', array($this,'fn_dynamic_css'));
+		// Add in hooks if sub class wants todo dynamic css
+		if( method_is_overriden('Render', $this, 'render_dynamic_css')){
+			
+	    	// Scripts and CSS
+			add_action( 'wp_enqueue_scripts', array($this, 'fn_enqueue_scripts') );
+			
+			// Ajax actions to handle dynamic css
+			add_action('wp_ajax_'. $this->get_dynamic_css_action_name(), array($this,'fn_dynamic_css'));
+	    	add_action('wp_ajax_nopriv_' . $this->get_dynamic_css_action_name(), array($this,'fn_dynamic_css'));
 
+		}
+		else{
+			
+			// Trace
+			dbg_trace(); 
+		}
 	}
 	
 	// Enqueue scripts and styles
@@ -60,8 +71,8 @@ abstract class Render {
 		
 		  // Style sheets
 		wp_enqueue_style(
-		            'info-cards-dynamic',
-		            admin_url('admin-ajax.php').'?action=dynamic_css',
+		            'render' . $this->get_dynamic_css_action_name(),
+		            admin_url('admin-ajax.php').'?action=' . $this->get_dynamic_css_action_name(),
 		            array(),
 		            time(),
 		            'all'
@@ -69,18 +80,18 @@ abstract class Render {
 	}
   
 	// Call back to generate dynamic css
+	// @codeCoverageIgnoreStart
 	function fn_dynamic_css(){
 	
 		// Do content type header here, outside of unit test coverage
-		// @codeCoverageIgnoreStart
 		header("Content-type: text/css; charset: UTF-8");
 		
 		// Create the actual CSS body
 		$this->render_dynamic_css();
-		// @codeCoverageIgnoreEnd
-	
 	
 	}
+	// @codeCoverageIgnoreEnd
+
 	
 	// Call back to register short codes. 
 	function fn_register_short_codes() {

@@ -5,6 +5,16 @@
 */
 require_once dirname( __FILE__ ) . "/../src/utils.php";
 
+
+class A_Base_class {
+    function override_me(){}
+    function donot_override_me(){}
+}
+
+class A_Sub_class extends A_Base_class {
+    function override_me(){}
+}
+
 class UtilsTest extends WP_UnitTestCase
 {
 
@@ -16,6 +26,16 @@ class UtilsTest extends WP_UnitTestCase
         $this->assertTrue( true);
 
     }
+    
+    public function test_method_is_overriden(){
+        
+        $sub_class_instance = new A_Sub_class();
+        
+        $this->assertTrue( method_is_overriden('A_Base_class', $sub_class_instance, 'override_me'));
+        $this->assertTrue( ! method_is_overriden('A_Base_class', $sub_class_instance, 'donot_override_me'));
+
+    }
+
     
     
     public function test_methods()

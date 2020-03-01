@@ -78,8 +78,6 @@ function is_valid_email($value){
     return ( 1 == $result);
 }
 
-
-
 // Returns true if valid number in range
 function is_valid_integer_in_range($value, $min, $max){
 
@@ -124,7 +122,17 @@ function is_valid_html($string, $echoErrors = false) {
   // Return true on no errors, else false
   return ( 0 ==  count($errors));
 }
-    
+ 
+// Returns true of the method has a declaration on the sub class
+function method_is_overriden($base_class_name, $sub_class_instance, $method_name){
+  
+  // Get a reflection method
+  $reflection_method = new \ReflectionMethod( $sub_class_instance , $method_name );
+  $declaring_class_name = $reflection_method->getDeclaringClass()->name;
+  
+  // If the declaring class is the same as the base class the method was not overriden
+  return ! ($base_class_name === $declaring_class_name);
+}  
 
 /**
 * Wordpress Utilities 
