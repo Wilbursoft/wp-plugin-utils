@@ -49,6 +49,44 @@ abstract class Form {
 		
 	}
 	
+		// Helper for an input html block
+	function hlp_get_input_html(
+	        $field_name, 
+	        $field_text,
+	        $placholder_text,
+	        $div_class, 
+	        $label_class, 
+	        $input_class){
+	
+	
+	  // Format
+	  $output = "<div class='{$div_class}'>
+	              <label for='{$field_name}' class='{$label_class}'>{$field_text}</label>
+	              <input type='text' placeholder='{$placholder_text}' name='{$field_name}' id='{$field_name}' class='{$input_class}' />
+	            </div>";
+	
+	  
+	  // Return
+	  return $output;
+	}
+	
+	// Helper for an submit html block
+	function hlp_get_submit_html(
+	        $submit_name, 
+	        $submit_text,
+	        $div_class, 
+	        $input_class){
+	
+	
+	  // Format
+	  $output = "<div class='{$div_class}'>
+	  		            <input type='submit' name='{$submit_name}' id='{$submit_name}' value='{$submit_text}' class='{$input_class}' />
+	            </div>";
+	        
+	  // Return
+	  return $output;
+	}
+	
 	// Opens the form html
 	function get_form_open_html(){
 		

@@ -16,8 +16,31 @@ class Form_Sublcass extends Form {
     // Generate the form input html
     function get_form_contents_html()
     {
+        // Flag called
         $this->get_form_contents_html_was_called = true;
-        $output = "<input type='text' name='test_email_val'  />";
+        
+        // Custom input
+        $output = "<input type='text' name='test_email_val'  />";      
+        
+        // Use helper for another input 
+        $output .= $this->hlp_get_input_html(
+            "test_field_mame",          // $field_name 
+            "test_field_txt",           // $field_text
+            "test_field_placeholder",   // $placholder_text
+            "div_class",                // $div_class, 
+            "label_class",              // $label_class, 
+            "input_class"                // $input_class
+            );
+            
+        // USe helper for submit
+        $output .= $this->hlp_get_submit_html(
+            "submit_name",          // $submit_name
+            "submit_text",          // $submit_text,
+            "submit_div_class",     // $div_class, 
+            "submit_button-class"   // $input_class
+            );
+            
+         // Done  
         return $output;
     }
     
@@ -141,5 +164,32 @@ class Form_Test extends WP_UnitTestCase
         $_POST = $tmp_POST;
 
     }
+    
+     public function test_helpers(){
+
+         /**
+         * Test post handling 
+         **/
+        $form_name = 'my_test_form';
+        $form_id = 'my_test_id';
+        $failed_msg = 'failed-abc';
+        $success_msg = 'succees-xyz';
+        $form_to_test = new Form_Sublcass( $form_name, $form_id,  $failed_msg, $success_msg);
+        $form_html = $form_to_test->get_form_html();
+        $this->assertTrue(is_valid_html($form_html));
+        $this->assertContains('form', $form_html);
+        $this->assertContains("test_field_mame", $form_html);
+        $this->assertContains('test_field_txt', $form_html);
+        $this->assertContains('test_field_placeholder', $form_html);
+        $this->assertContains('div_class', $form_html);
+        $this->assertContains('label_class', $form_html);
+        $this->assertContains('input_class', $form_html);
+        $this->assertContains('submit_name', $form_html);
+        $this->assertContains('submit_text', $form_html);
+        $this->assertContains('submit_div_class', $form_html); 
+        $this->assertContains('submit_button', $form_html);
+
+     }
+    
     
 }
