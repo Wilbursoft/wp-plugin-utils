@@ -106,6 +106,15 @@ class UtilsTest extends WP_UnitTestCase
         $this->assertTrue(! is_valid_colour('#824e3'));
     }
    
+      public function test_is_valid_email(){
+        
+        $this->assertTrue(is_valid_email('test@test.com'));
+          
+        $this->assertTrue(! is_valid_email(''));
+        $this->assertTrue(! is_valid_email('fred'));
+        $this->assertTrue(! is_valid_email('#824e3'));
+    }
+   
     
     public function test_is_valid_integer_in_range(){
         

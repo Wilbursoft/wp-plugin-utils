@@ -23,7 +23,7 @@ abstract class Form {
 	
 	// Flag validation errors
 	function set_post_invalid(){
-		$this->post_valid = true;
+		$this->post_valid = false;
 	}
 	
 	// Constructor
@@ -71,7 +71,7 @@ abstract class Form {
 	abstract function get_form_contents_html();
 	
 	// Handle the form post
-	abstract function handle_form_post();
+	abstract function handle_form_post($post);
 	
 	// Closes the form html
 	function get_form_close_html(){
@@ -88,10 +88,9 @@ abstract class Form {
 	}
 	
 	// helper checks of the post belongs to this form
-	private function hlp_post_belongs_to_form(){
+	private function hlp_post_belongs_to_form($post){
 		
-		global $_POST;
-		return ( isset($_POST['form_name']) and $this->form_name == $_POST['form_name'] );
+		return ( isset($post['form_name']) and $this->form_name == $post['form_name'] );
 	}
 	
 	// Are we handling a post for this form
@@ -118,17 +117,17 @@ abstract class Form {
 	
 		$output = "";
 		
-		// Need to handle the post?
-		if( $this->hlp_post_belongs_to_form() ){
+		// Need to handle the post??
+		global $_POST;
+		if( $this->hlp_post_belongs_to_form($_POST) ){
 		
 			// Hanlde the post
-			$this->handle_form_post();
+			$this->handle_form_post($_POST);
 			
 			// Output the message
 			$output .= $this->get_form_msg_html();
 		}
 		
-		$output .= $this->get_form_msg_html();
 		$output .= $this->get_form_open_html();
 		$output .= $this->get_form_contents_html();
 		$output .= $this->get_form_close_html();
