@@ -71,5 +71,7 @@ class Render_Test extends WP_UnitTestCase
         
         $dynamic_css_render = new Render_SubClass_with_dynamic_css('render_dynamic_css_short_code');
         $dynamic_css_render->fn_enqueue_scripts();
+        $this->assertTrue(false !== is_style_enqueued( $dynamic_css_render->get_dynamic_css_action_name()));
+
     }
 }
