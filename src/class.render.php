@@ -19,10 +19,16 @@ abstract class Render {
 		return $this->short_code_tag; 
 	}
 	
-	// Abstract methods
+	// Abstract & overidable methods
 	
 	// Called to render the short code 
 	abstract function render_shortcode();
+	
+	// Called to render the dynamic css content
+	// Override if dynamic css needed.
+	function render_dynamic_css(){
+		assert(false, 'this function should only be called if it is overriden.');
+	}
 	
 	
 	// Constructor
@@ -36,6 +42,44 @@ abstract class Render {
 		
 		// Register for init call back
     	add_action( 'init', array ($this, 'fn_register_short_codes'));
+  
+    	// Scripts and CSS
+		add_action( 'wp_enqueue_scripts', array($this, 'fn_enqueue_scripts') );
+		
+		// Ajax actions to handle dynamic css
+		add_action('wp_ajax_dynamic_css', array($this,'fn_dynamic_css'));
+    	add_action('wp_ajax_nopriv_dynamic_css', array($this,'fn_dynamic_css'));
+
+	}
+	
+	// Enqueue scripts and styles
+	function fn_enqueue_scripts()
+	{
+		// Trace
+		dbg_trace();
+		
+		  // Style sheets
+		wp_enqueue_style(
+		            'info-cards-dynamic',
+		            admin_url('admin-ajax.php').'?action=dynamic_css',
+		            array(),
+		            time(),
+		            'all'
+		        	);
+	}
+  
+	// Call back to generate dynamic css
+	function fn_dynamic_css(){
+	
+		// Do content type header here, outside of unit test coverage
+		// @codeCoverageIgnoreStart
+		header("Content-type: text/css; charset: UTF-8");
+		
+		// Create the actual CSS body
+		$this->render_dynamic_css();
+		// @codeCoverageIgnoreEnd
+	
+	
 	}
 	
 	// Call back to register short codes. 
