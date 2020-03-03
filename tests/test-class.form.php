@@ -131,9 +131,19 @@ class Form_Test extends WP_UnitTestCase
         $this->assertTrue(false === strpos($form_html, $failed_msg));
         $this->assertTrue(false === strpos($form_html, $success_msg));
 
-	    // Case #2- Right form empry fields
+	    // Case #2.1 - Right form empty fields, bad nonce
 	    $form_to_test = new Form_Sublcass( $form_name, $form_id,  $failed_msg, $success_msg);
  	    $_POST['form_name'] = $form_name;
+        $form_html = $form_to_test->get_form_html();
+        $this->assertTrue( false === $form_to_test->handle_form_post_was_called );
+        $this->assertTrue(is_valid_html($form_html));
+        $this->assertTrue(false === strpos($form_html, $failed_msg));
+        $this->assertTrue(false === strpos($form_html, $success_msg));
+        
+        
+        // Case #2.2 - Right form empty fields, good nonce
+	    $form_to_test = new Form_Sublcass( $form_name, $form_id,  $failed_msg, $success_msg);
+   	    $_POST[$form_to_test->hlp_get_nonce_name()] = wp_create_nonce($form_to_test->hlp_get_nonce_action());
         $form_html = $form_to_test->get_form_html();
         $this->assertTrue( true === $form_to_test->handle_form_post_was_called );
         $this->assertTrue(is_valid_html($form_html));

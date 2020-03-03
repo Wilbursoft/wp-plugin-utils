@@ -100,6 +100,9 @@ abstract class Form {
 		<input type='hidden' name='form_name' value='<?php echo $this->form_name ?>' />
 		<?php 
 		
+		// Nonce
+		wp_nonce_field( $this->hlp_get_nonce_name(), $this->hlp_get_nonce_action() );
+		
 		$output = ob_get_contents();
 		ob_end_clean();
 		return $output;
@@ -125,10 +128,32 @@ abstract class Form {
 		return $output;
 	}
 	
+	// Get nonce name 
+	function hlp_get_nonce_name(){
+		return $this->form_name . '_nonce_name';
+	}
+	
+	// Get nonce action 
+	function hlp_get_nonce_action(){
+		return $this->form_name . '_nonce_action';
+	}
+	
 	// helper checks of the post belongs to this form
 	private function hlp_post_belongs_to_form($post){
 		
-		return ( isset($post['form_name']) and $this->form_name == $post['form_name'] );
+		// Check name
+		if ( ! (isset($post['form_name']) and $this->form_name == $post['form_name'] )){
+			return false;
+		}
+		
+		// check nonce - bail of not set or not valid
+		if ( ( ! isset( $_POST[$this->hlp_get_nonce_name()] ) ) or !wp_verify_nonce( $_POST[$this->hlp_get_nonce_name()], $this->hlp_get_nonce_action() ) ) {
+			return false;
+		}
+		
+		// Its this form and nonce is good
+		return true;
+		
 	}
 	
 	// Are we handling a post for this form
