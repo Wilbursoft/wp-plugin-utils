@@ -22,8 +22,15 @@ abstract class Form {
 	private $post_valid = true;
 	
 	// Flag validation errors
-	function set_post_invalid(){
+	function set_post_invalid($new_error_message = "" ){
+		
+		// Mark post as invalid
 		$this->post_valid = false;
+		
+		// Set the new error message of there is one 
+		if ("" !== $new_error_message){
+			$this->validate_fail_message = $new_error_message;
+		}
 	}
 	
 	// Constructor
