@@ -186,6 +186,77 @@ function get_option_array_value($options_name, $name, $default){
 	return get_value($options, $name, $default);
 }
 
+/**
+ * 
+ * CurlRequest & HttpRequest
+ * Wrappers for curl_ functions. Useful for mocking
+ * 
+ * 
+ **/
+ 
+
+// Interface hooks 
+interface HttpRequest
+{
+    public function set_option($name, $value);
+    public function execute();
+    public function get_info($name);
+    public function close();
+    public function get_exec_output();
+}
+
+class CurlRequest implements HttpRequest
+{
+    // Curl handle
+    private $handle = null;
+    
+    // Captured output 
+    private $exec_output = "";
+    
+    
+    // Constructor - pass in the target url
+    public function __construct($url) {
+        $this->handle = curl_init($url);
+    }
+    
+    // Get the captured output
+    public function get_exec_output(){
+        return $this->exec_output;
+    }
+
+
+    // Set curl options 
+    public function set_option($name, $value) {
+        curl_setopt($this->handle, $name, $value);
+    }
+
+    // Execute the REST HTTP function 
+    public function execute() {
+        
+        // Need to capture stdout 
+        ob_start();
+
+        // Do it 
+        $result = curl_exec($this->handle);
+        
+        // Capture output 
+        $this->exec_output = ob_get_contents();
+        ob_end_clean();
+        
+        // Done 
+        return $result;
+    }
+
+    // Get info e.g. response code 
+    public function get_info($name) {
+        return curl_getinfo($this->handle, $name);
+    }
+
+    // Close the handle 
+    public function close() {
+        curl_close($this->handle);
+    }
+}
 
 /**
  * Font Awesome Kit Setup

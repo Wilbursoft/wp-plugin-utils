@@ -5,6 +5,23 @@
 */
 require_once dirname( __FILE__ ) . "/../src/utils.php";
 
+class CurlRequest_Test extends WP_UnitTestCase{
+    
+    public function test_methods(){
+        
+        $this->assertTrue(true);
+
+        $url = "https://example.org";
+        $request = new CurlRequest($url);
+        $request->set_option( CURLOPT_POST, false);
+        $request->execute();
+        $request->get_info(CURLINFO_HTTP_CODE);
+        $request->get_exec_output();
+        $request->close();
+
+    }
+    
+}
 
 class A_Base_class {
     function override_me(){}
