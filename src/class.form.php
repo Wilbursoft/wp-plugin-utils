@@ -46,7 +46,7 @@ abstract class Form {
 				! empty( $form_id ) and
 				! empty( $validate_fail_message ) and
 				! empty( $validate_success_message ), 
-				'none of the params cannot be empty.');
+				'none of the params can be empty.');
 		
 		// Assign to class 
 		$this->form_name = $form_name;
