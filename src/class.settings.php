@@ -270,7 +270,7 @@ class Settings {
 				add_settings_error( 
 					self::$option_name, 
 					$id, 
-					__( 'Unknown field.', 'wp-plugin-utils' ), 
+					__( 'Unknown field.' ), 
 					'error' 
 					);
 	        	
@@ -341,7 +341,7 @@ class Settings {
 					add_settings_error( 
 						self::$option_name, 
 						$id, 
-						__( 'Thats an unkown field.', 'wp-plugin-utils' ), 
+						__( 'Thats an unkown field.' ), 
 						'error' );
 						
 					// Trace unexpected type
