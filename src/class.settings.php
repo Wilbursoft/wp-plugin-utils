@@ -284,9 +284,12 @@ class Settings {
 	        // Get current value or default
 	        $current_value = get_option_array_value (self::$option_name, $id, $field_details['default']);
 
+		    // Strip tags and handle quoted strings
+		    $value = strip_tags( stripslashes( $value ));
 	       
 	        // switch on type
-	        switch($field_details['type']){
+	        $field_type = $field_details['type'];
+	        switch($field_type){
 	        	
 	        	case 'integer':
 	        		
@@ -331,12 +334,29 @@ class Settings {
 	        		
 	        		// Colour done
 	        		break;
-	        	
+	        
+	        	case 'string':
+	        		
+	        		// check valid
+	    			if( empty($value) ){
+	     			
+		     			// Format error 
+		     			add_settings_error( 
+		     				self::$option_name, 
+		     				$id, 
+		     				$field_details['format_msg'],
+		     				'error'
+		     			);
+		     				
+		     			// Restore current value or default
+		     			$value = $current_value;
+	    			}
+	        		
+	        		// String done
+	        		break;	
+	        		
 	        	default:
 	       
-		            // Strip tags and handle quoted strings
-		            $value = strip_tags( stripslashes( $value ));
-		            
 		            // Format error 
 					add_settings_error( 
 						self::$option_name, 
